@@ -1,6 +1,7 @@
 from app import app, db
 from models import Todo
 from flask import jsonify
+from flask import request
 
 @app.route('/')
 def index():
@@ -22,7 +23,13 @@ def todo(id):
 
 @app.route('/api/v1/todos', methods = ['POST'])
 def create_todo():
-  return 'You are creating a todo\n'
+  args = request.args
+  todo = Todo(text = args['text'], previous_todo = args['previousTodo'])
+  db.session.add(todo)
+  db.session.commit()
+  response = jsonify(todo.serialize)
+  response.status_code = 200
+  return response
 
 @app.route('/api/v1/todos/<int:id>', methods = ['PUT'])
 def update_todo(id):
