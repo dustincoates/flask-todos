@@ -2,7 +2,9 @@ import os
 import app
 import unittest
 import tempfile
+import mock
 from flask.ext.sqlalchemy import SQLAlchemy
+from app.models import Todo
 
 class FlaskrTestCase(unittest.TestCase):
 
@@ -10,12 +12,12 @@ class FlaskrTestCase(unittest.TestCase):
     self.db_fd, app.app.config['DATABASE'] = tempfile.mkstemp()
     app.app.config['TESTING'] = True
     self.app = app.app.test_client()
-    db = SQLAlchemy(app.app)
+    # self.db = SQLAlchemy(app.app)
 
   def tearDown(self):
     os.close(self.db_fd)
     os.unlink(app.app.config['DATABASE'])
-    pass
+    
   
   def test_home(self):
     res = self.app.get('/')
@@ -25,9 +27,16 @@ class FlaskrTestCase(unittest.TestCase):
     res = self.app.get('/api/v1/todos')
     self.assertEqual(res.status_code, 200)
     
-  def test_api_show(self):
+  def test_api_show_with_no_todo(self):
+    Todo.query.delete()
+    res = self.app.get('/api/v1/todos/1')
+    self.assertEqual(res.status_code, 404)
+    
+  def test_api_show_with_todo(self):
+    todo = Todo(text = "Something to do", position = 1)
     res = self.app.get('/api/v1/todos/1')
     self.assertEqual(res.status_code, 200)
+    Todo.query.delete()
     
   def test_api_create(self):
     res = self.app.post('/api/v1/todos')
