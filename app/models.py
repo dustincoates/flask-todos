@@ -14,5 +14,6 @@ class Todo(db.Model):
     return {
       'id': self.id,
       'text': self.text,
-      'previousTodo': self.previous_todo
+      'previousTodo': self.previous_todo,
+      'complete': self.complete
     }
