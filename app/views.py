@@ -1,4 +1,4 @@
-from app import app
+from app import app, db
 
 @app.route('/')
 def index():
@@ -6,7 +6,7 @@ def index():
 
 @app.route('/api/v1/todos', methods = ['GET'])
 def todos():
-  return 'todos index\n'
+  return "Todo"
 
 @app.route('/api/v1/todos/<int:id>', methods = ['GET'])
 def todo(id):
