@@ -9,7 +9,7 @@ def index():
 
 @app.route('/api/v1/todos', methods = ['GET'])
 def todos():
-  return "Todo"
+  return jsonify(todos=[todo.serialize for todo in Todo.query.all()])
 
 @app.route('/api/v1/todos/<int:id>', methods = ['GET'])
 def todo(id):
