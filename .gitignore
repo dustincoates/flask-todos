@@ -1,8 +1,8 @@
-site/node_modules
-site/dist
-site/.tmp
-site/.sass-cache
-site/app/bower_components
-site/test/bower_components
+static/node_modules
+static/dist
+static/.tmp
+static/.sass-cache
+static/app/bower_components
+static/test/bower_components
 *.pyc
 *.db

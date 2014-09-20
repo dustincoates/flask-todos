@@ -1,11 +1,10 @@
 from app import app, db
 from models import Todo
-from flask import jsonify
-from flask import request
+from flask import jsonify, request, render_template
 
 @app.route('/')
 def index():
-  return 'Hello, World!'
+  return render_template('static/app/index.html')
 
 @app.route('/api/v1/todos', methods = ['GET'])
 def todos():
