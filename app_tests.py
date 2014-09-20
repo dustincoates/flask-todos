@@ -16,8 +16,7 @@ class FlaskrTestCase(unittest.TestCase):
   def tearDown(self):
     os.close(self.db_fd)
     os.unlink(app.app.config['DATABASE'])
-    
-  
+
   def test_home(self):
     res = self.app.get('/')
     assert 'Hello, World!' in res.data
@@ -38,10 +37,16 @@ class FlaskrTestCase(unittest.TestCase):
     Todo.query.delete()
     
   def test_api_create_with_correct_params(self):
-    data = {'text': 'Something to do', 'previousTodo': 2}
     res = self.app.post('/api/v1/todos?text=Something+to+do&previousTodo=2', 
       headers = {'content-type':'application/json'})
-    self.assertEqual(res.status_code, 200)
+    self.assertEqual(res.status_code, 201)
+    Todo.query.delete()
+    
+  def test_api_create_with_incorrect_params(self):
+    res = self.app.post('/api/v1/todos?title=Something+to+do&previousTodo=2', 
+      headers = {'content-type':'application/json'})
+    self.assertEqual(res.status_code, 400)
+    Todo.query.delete()
     
   def test_api_update(self):
     res = self.app.put('/api/v1/todos/1')

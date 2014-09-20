@@ -19,7 +19,7 @@ def todo(id):
     response.status_code = 404
     return response
   else:
-    return "Success"
+    return jsonify(todo.serialize), 200
 
 @app.route('/api/v1/todos', methods = ['POST'])
 def create_todo():
@@ -28,7 +28,7 @@ def create_todo():
   db.session.add(todo)
   db.session.commit()
   response = jsonify(todo.serialize)
-  response.status_code = 200
+  response.status_code = 201
   return response
 
 @app.route('/api/v1/todos/<int:id>', methods = ['PUT'])
@@ -37,4 +37,10 @@ def update_todo(id):
 
 @app.route('/api/v1/todos/<int:id>', methods = ['DELETE'])
 def delete_todo(id):
-  return 'You are deleting a todo\n'
+  todo = Todo.query.get(id)
+  if todo == None:
+    response = jsonify({'code': 404, 'message': 'No Todo found'})
+  else:
+    todo.delete()
+    response = jsonify({'code': 200, 'message': 'Todo deleted'})
+  return response
