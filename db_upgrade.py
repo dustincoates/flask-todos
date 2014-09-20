@@ -5,6 +5,6 @@
 
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI
-from config import SQLALCHEMY_MIGRATION
-api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATION)
-print 'Current database version: ' + str(api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATION))
+from config import SQLALCHEMY_MIGRATIONS
+api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATIONS)
+print 'Current database version: ' + str(api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATIONS))
